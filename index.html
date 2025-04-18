@@ -205,15 +205,20 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
 
       q.answers.forEach(answer => {
         const btn = document.createElement('button');
-        btn.textContent = answer.text;
+        btn.textContent = answer.answer;
         btn.onclick = () => {
           score += answer.score;
 
           // Show selected answer
           const answerEl = document.createElement('div');
           answerEl.className = 'answer';
-          answerEl.textContent = `You answered: ${answer.text} (+${answer.score} points)`;
+          answerEl.textContent = `You answered: ${answer.answer} (+${answer.score} points)`;
           block.appendChild(answerEl);
+
+	  const explainEl = document.createElement('div');
+          explainEl.className = 'answer';
+          explainEl.textContent = answer.explain;
+          block.appendChild(explainEl);
 
           // Disable all buttons in this block
           const allButtons = block.querySelectorAll('button');
@@ -262,10 +267,13 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
     }
 
     questions[entry.id].answers.push({
-      text: entry.answer_text,
+      answer: entry.answer_text,
+      explain: entry.explain_text,	    
       score: parseInt(entry.score),
       next: entry.next
     });
+
+
   }
 //console.log(questions);
 
