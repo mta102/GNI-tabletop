@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Branching Questionnaire</title>
+  <h1>GNI Automated Censorship Tabletop Exercise</h1>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
+    padding: 40px;
+  }
+
+  .question-block {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .question-block:hover {
+    transform: scale(1.03);
+  }
+
+  .question-block p {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+
+.question-block p.narrative {
+  font-weight: normal; 
+  font-style: italic;  
+}
+
+  button {
+    display: inline-block;
+    margin: 6px 8px 0 0;
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+
+  .answer {
+    margin-top: 10px;
+    color: #2c7a00;
+    font-style: italic;
+    font-size: 16px;
+  }
+
+  #score {
+    font-size: 20px;
+    text-align: center;
+    color: #333;
+    margin-top: 40px;
+  }
+
+
+#intro-section {
+  margin-bottom: 30px;
+}
+
+#toggleIntro {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+#toggleIntro:hover {
+  background-color: #5a6268;
+}
+
+#introText {
+  background-color: #fffbe6;
+  border: 1px solid #ffe58f;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+
+</style>
+</head>
+<body>
+<div id="intro-section">
+  <button id="toggleIntro">Show Introduction ▼</button>
+  <div id="introText" style="display: none;">
+    <p>
+      Welcome to the quiz! This short questionnaire will guide you through a few choices,
+      and your answers will help determine a final score. Each question builds on your previous responses.
+    </p>
+    <p>
+      Click on the options that best describe your preferences, and enjoy the journey!
+    </p>
+  </div>
+</div>
+
+  <div id="quiz"></div>
+  <div id="score" style="font-weight: bold; margin-top: 30px;"></div>
+
+  <script>
+    const quizContainer = document.getElementById('quiz');
+    const scoreContainer = document.getElementById('score');
+    let score = 0;
+
+const toggleBtn = document.getElementById('toggleIntro');
+const introText = document.getElementById('introText');
+let introVisible = false;
+
+toggleBtn.onclick = () => {
+  introVisible = !introVisible;
+  introText.style.display = introVisible ? 'block' : 'none';
+  toggleBtn.textContent = introVisible ? 'Hide Introduction ▲' : 'Show Introduction ▼';
+};
+
+
+
+    function showQuestion(key) {
+      const q = questions[key];
+	console.log(q);
+      const block = document.createElement('div');
+      block.className = 'question-block';
+      
+      
+      const narrativeText = document.createElement('p');
+      narrativeText.className = 'narrative';
+      narrativeText.textContent = q.narrative;
+      block.appendChild(narrativeText);
+
+
+      const questionText = document.createElement('p');
+      questionText.textContent = q.question;
+      block.appendChild(questionText);
+
+      q.answers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.textContent = answer.text;
+        btn.onclick = () => {
+          score += answer.score;
+
+          // Show selected answer
+          const answerEl = document.createElement('div');
+          answerEl.className = 'answer';
+          answerEl.textContent = `You answered: ${answer.text} (+${answer.score} points)`;
+          block.appendChild(answerEl);
+
+          // Disable all buttons in this block
+          const allButtons = block.querySelectorAll('button');
+          allButtons.forEach(b => b.disabled = true);
+
+          // Continue to next question
+          if (answer.next === "end") {
+            showScore();
+          } else {
+            showQuestion(answer.next);
+          }
+        };
+        block.appendChild(btn);
+      });
+
+      quizContainer.appendChild(block);
+    }
+
+    function showScore() {
+      scoreContainer.textContent = `Your total score is: ${score}`;
+    }
+
+  async function loadQuestions() {
+  const response = await fetch('https://raw.githubusercontent.com/mta102/GNItabletop/refs/heads/main/qa.csv');
+  const data = await response.text();
+
+  const rows = data.trim().split('\n');
+  const headers = rows.shift().split(',');
+
+  const questions = {};
+
+  for (let row of rows) {
+    const values = row.split(',');
+    const entry = {};
+    headers.forEach((header, index) => {
+      entry[header.trim()] = values[index].trim();
+    });
+
+    if (!questions[entry.id]) {
+      questions[entry.id] = {
+        narrative: entry.narrative,
+        question: entry.question,
+        answers: []
+      };
+    }
+
+    questions[entry.id].answers.push({
+      text: entry.answer_text,
+      score: parseInt(entry.score),
+      next: entry.next
+    });
+  }
+//console.log(questions);
+
+  return questions; }
+
+  (async function init() {
+    questions = await loadQuestions();
+    showQuestion("start");
+  })();
+  </script>
+
+</body>
+</html>
