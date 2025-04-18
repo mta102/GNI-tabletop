@@ -64,6 +64,12 @@
     font-style: italic;
     font-size: 16px;
   }
+  .explain {
+    margin-top: 10px;
+    color: black;
+    font-style: italic;
+    font-size: 16px;
+  }
 
 .intro-section {
   margin-bottom: 30px;
@@ -216,9 +222,14 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
           block.appendChild(answerEl);
 
 	  const explainEl = document.createElement('div');
-          explainEl.className = 'answer';
+          explainEl.className = 'explain';
           explainEl.textContent = answer.explain;
           block.appendChild(explainEl);
+
+	  const summaryEl = document.createElement('div');
+          summaryEl.className = 'explain';
+          summaryEl.textContent = answer.summary;
+          block.appendChild(summaryEl);
 
           // Disable all buttons in this block
           const allButtons = block.querySelectorAll('button');
@@ -268,7 +279,8 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
 
     questions[entry.id].answers.push({
       answer: entry.answer_text,
-      explain: entry.explain_text,	    
+      explain: entry.explain_text,
+      summary: entry.post_summary,
       score: parseInt(entry.score),
       next: entry.next
     });
