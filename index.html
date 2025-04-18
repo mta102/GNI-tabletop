@@ -204,12 +204,12 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
       
       const narrativeText = document.createElement('p');
       narrativeText.className = 'narrative';
-      narrativeText.textContent = q.narrative;
+      narrativeText.innerHTML = q.narrative;
       block.appendChild(narrativeText);
 
 
       const questionText = document.createElement('p');
-      questionText.textContent = q.question;
+      questionText.innerHTML = q.question;
       block.appendChild(questionText);
 
       q.answers.forEach(answer => {
@@ -227,13 +227,13 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
 	 
 	 const explainEl = document.createElement('div');
           explainEl.className = 'explain';
-          explainEl.textContent = answer.explain;
+          explainEl.innerHTML = answer.explain;
           block.appendChild(explainEl);
 
 	if (!answer.summary === ""){   
 	const summaryEl = document.createElement('div');
           summaryEl.className = 'explain';
-          summaryEl.textContent = answer.summary;
+          summaryEl.innerHTML = answer.summary;
           block.appendChild(summaryEl);}
 
           // Disable all buttons in this block
