@@ -1,0 +1,8 @@
+id,narrative,question,answer_text,score,next
+start,this is a narrative 1,What's your favorite type of activity?,Outdoor,10,outdoor
+start,this is a narrative 1,What's your favorite type of activity?,Indoor,5,indoor
+start,this is a narrative 1,What's your favorite type of activity?,Neither,0,end
+outdoor,this is a narrative 2,Which outdoor activity do you prefer?,Hiking,10,end
+outdoor,this is a narrative 2,Which outdoor activity do you prefer?,Swimming,8,end
+indoor,this is a narrative 3,Which indoor activity do you prefer?,Reading,7,end
+indoor,this is a narrative 3,Which indoor activity do you prefer?,Gaming,9,end
