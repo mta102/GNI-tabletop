@@ -1,5 +1,5 @@
 id,narrative,question,answer_text,explain_text,post_summary,score,next
-start,narrative1,What do you do?,Comply,explain1,summary1,10,Demand2
+start,"narrative1,this is after the comma,and another comma,<br> and another one",What do you do?,Comply,explain1,summary1,10,Demand2
 start,narrative1,What do you do?,Do not comply,explain2,summary1,5,Demand3
 Demand2,narrative2,What do you do?,Comply,explain3,,10,end
 Demand2,narrative2,What do you do?,Do not comply,explain4,,8,end
