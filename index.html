@@ -268,12 +268,19 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
   const questions = {};
 
   for (let row of rows) {
+	console.log("row");
+	console.log(row);
     const values = row.split(',');
-	  //console.log(values);
+	console.log("values");	  
+	console.log(values);
+
     const entry = {};
     headers.forEach((header, index) => {
+	console.log(`header ${header}`);
       entry[header.trim()] = (values[index] || "").trim();
     });
+console.log("entry");
+console.log(entry);
 
     if (!questions[entry.id]) {
       questions[entry.id] = {
@@ -293,7 +300,7 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
 
 
   }
-console.log(questions);
+//console.log(questions);
 
   return questions; }
 
