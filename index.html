@@ -258,6 +258,7 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
   //const response = await fetch('https://raw.githubusercontent.com/mta102/GNItabletop/refs/heads/main/qa.csv');
   const response = await fetch('qa.csv');
   const data = await response.text();
+  console.log(data);
 
   const rows = data.trim().split('\n');
   const headers = rows.shift().split(',');
