@@ -173,7 +173,7 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
   <div id="quiz"></div>
   <div id="score" style="font-weight: bold; margin-top: 30px;"></div>
 
-  <script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js">
     const quizContainer = document.getElementById('quiz');
     const scoreContainer = document.getElementById('score');
     let score = 0;
@@ -254,55 +254,44 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
       scoreContainer.textContent = `Your total score is: ${score}`;
     }
 
-  async function loadQuestions() {
-  //const response = await fetch('https://raw.githubusercontent.com/mta102/GNItabletop/refs/heads/main/qa.csv');
+
+
+async function loadQuestions() {
   const response = await fetch('qa.csv');
   const data = await response.text();
-  //console.log(data);
 
-  const rows = data.trim().split('\n');
-//console.log(rows);
-  const headers = rows.shift().split(',');
-//console.log(headers);
+  // Use PapaParse to handle quotes, commas, line breaks properly
+  const parsed = Papa.parse(data, {
+    header: true,
+    skipEmptyLines: true
+  });
 
   const questions = {};
 
-  for (let row of rows) {
-	console.log("row");
-	console.log(row);
-    const values = row.split(',');
-	console.log("values");	  
-	console.log(values);
+  parsed.data.forEach(entry => {
+    const id = entry.id.trim();
 
-    const entry = {};
-    headers.forEach((header, index) => {
-	console.log(`header ${header}`);
-      entry[header.trim()] = (values[index] || "").trim();
-    });
-console.log("entry");
-console.log(entry);
-
-    if (!questions[entry.id]) {
-      questions[entry.id] = {
+    if (!questions[id]) {
+      questions[id] = {
         narrative: entry.narrative,
         question: entry.question,
         answers: []
       };
     }
 
-    questions[entry.id].answers.push({
+    questions[id].answers.push({
       answer: entry.answer_text,
       explain: entry.explain_text,
       summary: entry.post_summary,
       score: parseInt(entry.score),
       next: entry.next
     });
+  });
+
+  return questions;
+}
 
 
-  }
-//console.log(questions);
-
-  return questions; }
 
   (async function init() {
     questions = await loadQuestions();
