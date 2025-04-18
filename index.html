@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Branching Questionnaire</title>
+  <title>GNI Tabletop Exercise - Internet Shutdown</title>
   
 <style>
   body {
@@ -65,19 +65,11 @@
     font-size: 16px;
   }
 
-  #score {
-    font-size: 20px;
-    text-align: center;
-    color: #333;
-    margin-top: 40px;
-  }
-
-
-#intro-section {
+.intro-section {
   margin-bottom: 30px;
 }
 
-#toggleIntro {
+.intro-section .toggleIntro {
   background-color: #6c757d;
   color: white;
   border: none;
@@ -88,19 +80,50 @@
   margin-bottom: 10px;
 }
 
-#toggleIntro:hover {
+.intro-section .toggleIntro:hover {
   background-color: #5a6268;
 }
 
-#introText {
+.intro-section .introText {
   background-color: #fffbe6;
   border: 1px solid #ffe58f;
   padding: 15px;
   border-radius: 8px;
 }
 
+.introText {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.introText.show {
+  max-height: 500px; /* set to a reasonable max height */
+  opacity: 1;
+}
+
+
+
+
+  #score {
+    font-size: 20px;
+    text-align: center;
+    color: #333;
+    margin-top: 40px;
+  }
+
+
+
+
+
+
 
 </style>
+
+
+
+	
 </head>
 <body>
 <header style="text-align: left; margin-bottom: 20px;">
@@ -109,16 +132,24 @@
 <h1>GNI Automated Censorship Tabletop Exercise</h1>
 
 	
-<div id="intro-section">
-  <button id="toggleIntro">Show Introduction ▼</button>
-  <div id="introText" style="display: none;">
-    <p>
-      Welcome to the quiz! This short questionnaire will guide you through a few choices,
-      and your answers will help determine a final score. Each question builds on your previous responses.
-    </p>
-    <p>
-      Click on the options that best describe your preferences, and enjoy the journey!
-    </p>
+<div class="intro-section">
+  <button class="toggleIntro">Show Section 1 ▼</button>
+  <div class="introText" style="display: none;">
+    <p>This is introduction section 1.</p>
+  </div>
+</div>
+
+<div class="intro-section">
+  <button class="toggleIntro">Show Section 2 ▼</button>
+  <div class="introText" style="display: none;">
+    <p>This is introduction section 2.</p>
+  </div>
+</div>
+
+<div class="intro-section">
+  <button class="toggleIntro">Show Section 3 ▼</button>
+  <div class="introText" style="display: none;">
+    <p>This is introduction section 3.</p>
   </div>
 </div>
 
@@ -130,15 +161,17 @@
     const scoreContainer = document.getElementById('score');
     let score = 0;
 
-const toggleBtn = document.getElementById('toggleIntro');
-const introText = document.getElementById('introText');
-let introVisible = false;
+  document.querySelectorAll('.intro-section').forEach(section => {
+    const btn = section.querySelector('.toggleIntro');
+    const text = section.querySelector('.introText');
 
-toggleBtn.onclick = () => {
-  introVisible = !introVisible;
-  introText.style.display = introVisible ? 'block' : 'none';
-  toggleBtn.textContent = introVisible ? 'Hide Introduction ▲' : 'Show Introduction ▼';
-};
+    btn.addEventListener('click', () => {
+      const isVisible = text.classList.toggle('show');
+      btn.textContent = isVisible
+        ? btn.textContent.replace('Show', 'Hide').replace('▼', '▲')
+        : btn.textContent.replace('Hide', 'Show').replace('▲', '▼');
+    });
+  });
 
 
 
