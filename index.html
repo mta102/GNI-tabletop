@@ -261,17 +261,18 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
   console.log(data);
 
   const rows = data.trim().split('\n');
-console.log(rows);
+//console.log(rows);
   const headers = rows.shift().split(',');
-console.log(headers);
+//console.log(headers);
 
   const questions = {};
 
   for (let row of rows) {
     const values = row.split(',');
+	  //console.log(values);
     const entry = {};
     headers.forEach((header, index) => {
-      entry[header.trim()] = values[index].trim();
+      entry[header.trim()] = (values[index] || "").trim();
     });
 
     if (!questions[entry.id]) {
