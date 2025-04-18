@@ -221,15 +221,17 @@ Additionally, Part 31(f) of the CRC permits a court or officer in charge of a po
           answerEl.textContent = `You answered: ${answer.answer} (+${answer.score} points)`;
           block.appendChild(answerEl);
 
-	  const explainEl = document.createElement('div');
+	 
+	 const explainEl = document.createElement('div');
           explainEl.className = 'explain';
           explainEl.textContent = answer.explain;
           block.appendChild(explainEl);
 
-	  const summaryEl = document.createElement('div');
+	if (!answer.summary === ""){   
+	const summaryEl = document.createElement('div');
           summaryEl.className = 'explain';
           summaryEl.textContent = answer.summary;
-          block.appendChild(summaryEl);
+          block.appendChild(summaryEl);}
 
           // Disable all buttons in this block
           const allButtons = block.querySelectorAll('button');
