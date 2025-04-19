@@ -39,11 +39,10 @@
         btn.onclick = () => {
           score += answer.score;
 
-          // Show selected answer
-          const answerEl = document.createElement('div');
+          /**const answerEl = document.createElement('div');
           answerEl.className = 'answer';
           answerEl.textContent = `You answered: ${answer.answer} (+${answer.score} points)`;
-          block.appendChild(answerEl);
+          block.appendChild(answerEl);**/
 
 	 
 	 const explainEl = document.createElement('div');
@@ -54,11 +53,11 @@
 	console.log("explain")
 	console.log(answer.summary)
 
-	if (!answer.summary === ""){   
+	//if (!answer.summary === ""){   
 	const summaryEl = document.createElement('div');
           summaryEl.className = 'explain';
           summaryEl.innerHTML = answer.summary;
-          block.appendChild(summaryEl);}
+          block.appendChild(summaryEl);//}
 
           // Disable all buttons in this block
           const allButtons = block.querySelectorAll('button');
@@ -78,7 +77,8 @@
     }
 
     function showScore() {
-      scoreContainer.textContent = `Your total score is: ${score}`;
+      //scoreContainer.textContent = `Your total score is: ${score}`;
+	scoreContainer.textContent = `Done!`;
     }
 
 
