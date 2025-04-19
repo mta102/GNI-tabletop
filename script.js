@@ -50,10 +50,8 @@
           explainEl.innerHTML = answer.explain;
           block.appendChild(explainEl);
 
-	console.log("explain")
-	console.log(answer.summary==="")
 
-	if (!answer.summary){   
+	if (!answer.summary===''){   
 	const summaryEl = document.createElement('div');
           summaryEl.className = 'explain';
           summaryEl.innerHTML = answer.summary;
