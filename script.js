@@ -51,7 +51,7 @@
           block.appendChild(explainEl);
 
 
-	if (!answer.summary===''){   
+	if (answer.summary!==''){   
 	const summaryEl = document.createElement('div');
           summaryEl.className = 'explain';
           summaryEl.innerHTML = answer.summary;
