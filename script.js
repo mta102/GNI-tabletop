@@ -51,13 +51,13 @@
           block.appendChild(explainEl);
 
 	console.log("explain")
-	console.log(answer.summary)
+	console.log(answer.summary==="")
 
-	//if (!answer.summary === ""){   
+	if (!answer.summary){   
 	const summaryEl = document.createElement('div');
           summaryEl.className = 'explain';
           summaryEl.innerHTML = answer.summary;
-          block.appendChild(summaryEl);//}
+          block.appendChild(summaryEl);}
 
           // Disable all buttons in this block
           const allButtons = block.querySelectorAll('button');
