@@ -16,67 +16,86 @@
 
 
 
-    function showQuestion(key) {
-      const q = questions[key];
-	//console.log(q);
-	if (q.type === 'single') {
-      const block = document.createElement('div');
-      block.className = 'question-block';
-      
-      
-      const narrativeText = document.createElement('p');
-      narrativeText.className = 'narrative';
-      narrativeText.innerHTML = q.narrative;
-      block.appendChild(narrativeText);
+  function showQuestion(key) {
+  const q = questions[key];
+  // console.log(q);
+  const block = document.createElement('div');
+  block.className = 'question-block';
+  
+  const narrativeText = document.createElement('p');
+  narrativeText.className = 'narrative';
+  narrativeText.innerHTML = q.narrative;
+  block.appendChild(narrativeText);
 
+  const questionText = document.createElement('p');
+  questionText.innerHTML = q.question;
+  block.appendChild(questionText);
 
-      const questionText = document.createElement('p');
-      questionText.innerHTML = q.question;
-      block.appendChild(questionText);
+  if (q.type === 'single') {
+    q.answers.forEach(answer => {
+      const btn = document.createElement('button');
+      btn.textContent = answer.answer;
+      btn.onclick = () => {
+        score += answer.score;
 
-      q.answers.forEach(answer => {
-        const btn = document.createElement('button');
-        btn.textContent = answer.answer;
-        btn.onclick = () => {
-          score += answer.score;
+        const explainEl = document.createElement('div');
+        explainEl.className = 'explain';
+        explainEl.innerHTML = answer.explain;
+        block.appendChild(explainEl);
 
-          /**const answerEl = document.createElement('div');
-          answerEl.className = 'answer';
-          answerEl.textContent = `You answered: ${answer.answer} (+${answer.score} points)`;
-          block.appendChild(answerEl);**/
-
-	 
-	 const explainEl = document.createElement('div');
-          explainEl.className = 'explain';
-          explainEl.innerHTML = answer.explain;
-          block.appendChild(explainEl);
-
-
-	if (answer.summary!==''){   
-	const summaryEl = document.createElement('div');
+        if (answer.summary !== '') {
+          const summaryEl = document.createElement('div');
           summaryEl.className = 'explain';
           summaryEl.innerHTML = answer.summary;
-          block.appendChild(summaryEl);}
+          block.appendChild(summaryEl);
+        }
 
-          // Disable all buttons in this block
-          const allButtons = block.querySelectorAll('button');
-          allButtons.forEach(b => b.disabled = true);
+        // Disable all buttons in this block
+        const allButtons = block.querySelectorAll('button');
+        allButtons.forEach(b => b.disabled = true);
 
-          // Continue to next question
-          if (answer.next === "end") {
-            showScore();
-          } else {
-            showQuestion(answer.next);
-          }
-        };
-        block.appendChild(btn);
-      });
+        // Continue to next question
+        if (answer.next === "end") {
+          showScore();
+        } else {
+          showQuestion(answer.next);
+        }
+      };
+      block.appendChild(btn);
+    });
 
-      quizContainer.appendChild(block);
-	} else if (q.type === 'MCQ') {
-	console.log("MCQ trigger successful")
-	}
-    }
+    quizContainer.appendChild(block);
+
+  } else if (q.type === 'MCQ') {
+    console.log("MCQ trigger successful");
+    const form = document.createElement('form');
+    form.id = key;
+    block.appendChild(form);
+
+    q.answers.forEach((answer, index) => {
+      const div = document.createElement('div');
+      div.className = 'option';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = `opt${index + 1}`;
+      checkbox.name = 'option';
+      checkbox.value = `option${index + 1}`;
+
+      const label = document.createElement('label');
+      label.setAttribute('for', `opt${index + 1}`);
+      label.textContent = answer.answer;
+
+      div.appendChild(checkbox);
+      div.appendChild(label);
+
+      form.appendChild(div);
+    });
+
+    quizContainer.appendChild(block); // <-- This was missing
+  }
+}
+
 
     function showScore() {
       //scoreContainer.textContent = `Your total score is: ${score}`;
