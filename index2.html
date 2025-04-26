@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkbox Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .option { margin: 10px 0; }
+    .feedback { font-size: 0.9em; margin-left: 10px; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+    .missed { color: orange; }
+  </style>
+</head>
+<body>
+
+<script>
+  // Create the header
+  const header = document.createElement('h2');
+  header.textContent = 'Select the correct options';
+  document.body.appendChild(header);
+
+  // Create the quiz form container
+  const quizFormContainer = document.createElement('div');
+  quizFormContainer.id = 'quizFormContainer';
+  document.body.appendChild(quizFormContainer);
+
+  // Create form element
+  const form = document.createElement('form');
+  form.id = 'quizForm';
+  quizFormContainer.appendChild(form);
+
+  // Define the quiz options
+  const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
+
+  // Create checkboxes with a loop
+  options.forEach((optionText, index) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = `opt${index + 1}`;
+    checkbox.name = 'option';
+    checkbox.value = `option${index + 1}`;
+
+    const label = document.createElement('label');
+    label.setAttribute('for', `opt${index + 1}`);
+    label.textContent = optionText;
+
+    div.appendChild(checkbox);
+    div.appendChild(label);
+
+    form.appendChild(div);
+  });
+
+  // Create the submit button
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.textContent = 'Submit';
+  form.appendChild(submitBtn);
+
+
+  // Correct answers and comments
+  const correctAnswers = ['option2', 'option4', 'option5'];
+
+  const comments = {
+    option1: 'Option 1 is incorrect. Review the basics.',
+    option2: 'Option 2 is correct! Good job.',
+    option3: 'Option 3 is incorrect. Think carefully.',
+    option4: 'Option 4 is correct! Well spotted.',
+    option5: 'Option 5 is incorrect. Check the details.',
+  };
+
+  // Handle form submission
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const selectedOptions = Array.from(document.querySelectorAll('input[name="option"]:checked'))
+                                .map(checkbox => checkbox.value);
+
+
+    // Loop over each option and show feedback next to it
+    options.forEach((optionText, index) => {
+      const option = `option${index + 1}`;
+      const checkbox = document.getElementById(`opt${index + 1}`);
+      const feedbackDiv = checkbox.parentElement.querySelector('.feedback');
+
+      // Create feedback if it doesn't already exist
+      if (!feedbackDiv) {
+        const feedback = document.createElement('span');
+        feedback.className = 'feedback';
+        checkbox.parentElement.appendChild(feedback);
+      }
+
+      const feedback = checkbox.parentElement.querySelector('.feedback');
+
+      // If the option is selected, show feedback
+      if (selectedOptions.includes(option)) {
+        const isCorrect = correctAnswers.includes(option);
+        feedback.textContent = comments[option];
+        feedback.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+      } else {
+        // If the option is not selected, show missed feedback
+        if (correctAnswers.includes(option)) {
+          feedback.textContent = `You missed ${optionText}: ${comments[option]}`;
+          feedback.className = 'feedback missed';
+        } else {
+          feedback.textContent = '';
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

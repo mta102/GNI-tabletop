@@ -102,6 +102,13 @@ button:disabled {
   opacity: 1;
 }
 
+    .option { margin: 10px 0; }
+    .feedback { font-size: 0.9em; margin-left: 10px; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+    .missed { color: orange; }
+
+
 #score {
   font-size: 20px;
   text-align: center;
