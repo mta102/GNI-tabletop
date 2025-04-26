@@ -19,6 +19,7 @@
     function showQuestion(key) {
       const q = questions[key];
 	//console.log(q);
+	if (q.type === 'single') {
       const block = document.createElement('div');
       block.className = 'question-block';
       
@@ -72,6 +73,9 @@
       });
 
       quizContainer.appendChild(block);
+	} else if (q.type === 'MCQ') {
+	console.log("MCQ trigger successful")
+	}
     }
 
     function showScore() {
@@ -98,6 +102,7 @@ async function loadQuestions() {
 
     if (!questions[id]) {
       questions[id] = {
+	type: entry.type,
         narrative: entry.narrative,
         question: entry.question,
         answers: []
@@ -105,9 +110,10 @@ async function loadQuestions() {
     }
 
     questions[id].answers.push({
-      answer: entry.answer_text,
-      explain: entry.explain_text,
-      summary: entry.post_summary,
+      answer: entry.option_text,
+	iscorrect:entry.is_correct,
+      explain: entry.feedback_text,
+      summary: entry.post_summary,	
       score: parseInt(entry.score),
       next: entry.next
     });
